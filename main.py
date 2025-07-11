@@ -90,7 +90,8 @@ async def get_task(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await context.bot.send_message(
         chat_id=user_id,
         text="Повторите данное фото через @kandinsky21_bot, не используя данные запрещённые слова: " + str(
-            ', '.join(ARR_BAN_WORD[current_vote_number - 1])))
+            ', '.join(ARR_BAN_WORD[
+                          current_vote_number - 1])) + "\n\nПосле генерации перешлите сообщение из бота с картинкой (что проверяется: фото, подпись, видно ли, что это пересланное сообщение)\nКроме того, запрос должен быть написать строго на русском языке с минимумом орфографических ошибок, при помощи которых есть шанс обойти проверку запроса. Давайте играть честно!")
 
 
 def calc_votes(vote_dir: str) -> {}:
@@ -234,7 +235,7 @@ async def check_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
     # Проверка 3: Соответствует ли текст регулярке
     text = update.message.text or update.message.caption or ""
 
-    if re.search(get_pattern(current_vote_number), text) or not ("Запрос:" in text):
+    if re.search(get_pattern(current_vote_number), text, re.IGNORECASE) or not ("Запрос:" in text):
         await update.message.reply_text("❌ Сообщение содержит запрещённые слова или не содержат текст вообще!")
         return
 
